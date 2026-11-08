@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Python 面试高频 Top 100：从基础语法、数据结构到并发、测试与编码实战，附精炼答案、追问方向和学习进度。"
+    />
+    <meta name="theme-color" content="#102a2a" />
+    <meta property="og:title" content="Python Interview Top 100" />
+    <meta
+      property="og:description"
+      content="一份可以真正刷完的 Python 面试高频题单。"
+    />
+    <meta property="og:type" content="website" />
+    <title>Python Interview Top 100 — 高频面试题</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      (() => {
+        const saved = localStorage.getItem("py100-theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme =
+          saved || (prefersDark ? "dark" : "light");
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#question-list">跳到题目列表</a>
+
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="回到首页">
+        <span class="brand-mark" aria-hidden="true">Py</span>
+        <span class="brand-copy">
+          <strong>INTERVIEW 100</strong>
+          <small>FIELD GUIDE / 2026</small>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="主导航">
+        <a href="#questions">题库</a>
+        <a href="#method">刷题方法</a>
+        <a href="#sources">资料来源</a>
+      </nav>
+
+      <button class="icon-button theme-toggle" type="button" aria-label="切换深色模式">
+        <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              2026 EDITION · 持续更新
+            </div>
+            <h1 id="hero-title">
+              Python 面试，<br />
+              <span>从这 100 题开始。</span>
+            </h1>
+            <p class="hero-lede">
+              综合公开高频题单与 Python 官方文档，整理成一份可搜索、可标记、
+              有答案的中文复习手册。先说结论，再讲原理，最后准备追问。
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#questions">
+                开始刷题
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m5 12 14 0M13 6l6 6-6 6"></path>
+                </svg>
+              </a>
+              <button class="button button-ghost" id="random-question" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+                </svg>
+                随机抽一题
+              </button>
+            </div>
+
+            <dl class="hero-stats" aria-label="题库概览">
+              <div>
+                <dt>100</dt>
+                <dd>精选问题</dd>
+              </div>
+              <div>
+                <dt>08</dt>
+                <dd>知识专题</dd>
+              </div>
+              <div>
+                <dt>03</dt>
+                <dd>难度层级</dd>
+              </div>
+            </dl>
+          </div>
+
+          <aside class="progress-panel" aria-labelledby="progress-title">
+            <div class="panel-topline">
+              <span>YOUR PROGRESS</span>
+              <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-visual">
+              <div class="progress-ring" style="--progress: 0deg">
+                <div class="progress-ring-inner">
+                  <strong id="mastered-count">0</strong>
+                  <span>/ 100</span>
+                </div>
+              </div>
+              <div>
+                <p id="progress-title">已掌握</p>
+                <strong id="progress-message">今天先拿下一题</strong>
+              </div>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-bar"></span>
+            </div>
+            <button class="continue-button" id="continue-learning" type="button">
+              <span>
+                <small>NEXT UP</small>
+                <strong id="next-question-label">#001 Python 有哪些核心特点？</strong>
+              </span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m9 18 6-6-6-6"></path>
+              </svg>
+            </button>
+            <p class="local-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+              进度只保存在你的浏览器中
+            </p>
+          </aside>
+        </div>
+        <div class="hero-code" aria-hidden="true">
+          <span>def</span> prepare<span>(questions=100):</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;<span>return</span> clarity <b>&gt;</b> memorization
+        </div>
+      </section>
+
+      <section class="questions-section" id="questions" aria-labelledby="questions-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">THE QUESTION BANK</p>
+            <h2 id="questions-title">高频题库</h2>
+          </div>
+          <p>
+            排名来自多份公开题单的交叉整理与实战价值判断，不是严格的统计频次。
+          </p>
+        </div>
+
+        <div class="question-toolbar">
+          <label class="search-box" for="question-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+            <span class="sr-only">搜索题目</span>
+            <input
+              id="question-search"
+              type="search"
+              placeholder="搜索题目、答案或关键词..."
+              autocomplete="off"
+            />
+            <kbd>/</kbd>
+          </label>
+
+          <div class="select-wrap">
+            <label class="sr-only" for="level-filter">按难度筛选</label>
+            <select id="level-filter">
+              <option value="all">全部难度</option>
+              <option value="基础">基础</option>
+              <option value="进阶">进阶</option>
+              <option value="高级">高级</option>
+            </select>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </div>
+
+          <div class="select-wrap">
+            <label class="sr-only" for="status-filter">按学习状态筛选</label>
+            <select id="status-filter">
+              <option value="all">全部状态</option>
+              <option value="unread">待学习</option>
+              <option value="mastered">已掌握</option>
+            </select>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </div>
+
+          <button
+            class="saved-filter"
+            id="saved-filter"
+            type="button"
+            aria-pressed="false"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 3h12v18l-6-4-6 4V3Z"></path>
+            </svg>
+            只看收藏
+          </button>
+        </div>
+
+        <div class="category-tabs" id="category-tabs" aria-label="按专题筛选"></div>
+
+        <div class="results-meta">
+          <p><strong id="visible-count">100</strong> 道题目</p>
+          <button id="reset-filters" type="button">清除筛选</button>
+        </div>
+
+        <div class="question-list" id="question-list" aria-live="polite"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <span aria-hidden="true">⌁</span>
+          <h3>没有找到匹配的问题</h3>
+          <p>换个关键词，或者清除当前筛选条件。</p>
+          <button class="button button-primary" id="empty-reset" type="button">
+            清除筛选
+          </button>
+        </div>
+      </section>
+
+      <section class="method-section" id="method" aria-labelledby="method-title">
+        <div class="section-heading section-heading-light">
+          <div>
+            <p class="section-kicker">HOW TO USE</p>
+            <h2 id="method-title">别背答案，练表达。</h2>
+          </div>
+          <p>每道题用三层回答法，把“知道”变成“能讲清楚”。</p>
+        </div>
+        <ol class="method-grid">
+          <li>
+            <span class="step-number">01</span>
+            <div>
+              <h3>20 秒给结论</h3>
+              <p>先用一句话回答定义或选择，让面试官马上知道你的判断。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">02</span>
+            <div>
+              <h3>60 秒讲原理</h3>
+              <p>解释底层机制、适用边界和常见陷阱，展示你不是只会背概念。</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-number">03</span>
+            <div>
+              <h3>用项目收尾</h3>
+              <p>补一个真实场景或代码例子，再主动准备面试官可能的追问。</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="sources-section" id="sources" aria-labelledby="sources-title">
+        <div class="sources-intro">
+          <p class="section-kicker">RESEARCH NOTES</p>
+          <h2 id="sources-title">题目从哪里来？</h2>
+          <p>
+            题目选取参考公开面试题单中反复出现的主题；答案以 Python 官方文档为准，
+            并针对现代 Python 补充了类型标注、结构化并发与 free-threaded CPython。
+          </p>
+        </div>
+        <div class="source-list">
+          <a href="https://docs.python.org/3/faq/programming.html" target="_blank" rel="noreferrer">
+            <span>01</span>
+            <strong>Python Programming FAQ</strong>
+            <small>官方行为与常见陷阱</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+          <a href="https://www.datacamp.com/blog/top-python-interview-questions-and-answers" target="_blank" rel="noreferrer">
+            <span>02</span>
+            <strong>DataCamp · Top Python Interview Questions</strong>
+            <small>高频主题与难度分层</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+          <a href="https://www.geeksforgeeks.org/python/python-interview-questions/" target="_blank" rel="noreferrer">
+            <span>03</span>
+            <strong>GeeksforGeeks · Python Interview</strong>
+            <small>基础题与编码题交叉核对</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+          <a href="https://realpython.com/learning-paths/python-interview/" target="_blank" rel="noreferrer">
+            <span>04</span>
+            <strong>Real Python · Interview Path</strong>
+            <small>面试学习路径与工程实践</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+          <a href="https://docs.python.org/3/howto/descriptor.html" target="_blank" rel="noreferrer">
+            <span>05</span>
+            <strong>Python Descriptor Guide</strong>
+            <small>属性查找与描述符协议</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+          <a href="https://docs.python.org/3/howto/free-threading-python.html" target="_blank" rel="noreferrer">
+            <span>06</span>
+            <strong>Python Free-threading Guide</strong>
+            <small>GIL 与 Python 3.13+ 新变化</small>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+          </a>
+        </div>
+        <p class="source-disclaimer">
+          最后核对：2026 年 11 月。Top 100 是编辑整理结果，不代表招聘平台的精确频率排名。
+        </p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#">
+        <span class="brand-mark" aria-hidden="true">Py</span>
+        <span class="brand-copy">
+          <strong>INTERVIEW 100</strong>
+          <small>OPEN STUDY GUIDE</small>
+        </span>
+      </a>
+      <p>为下一次技术面试，少背一点，多理解一点。</p>
+      <a href="https://github.com/" id="github-link" target="_blank" rel="noreferrer">
+        View on GitHub
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg>
+      </a>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
