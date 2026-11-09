@@ -2,6 +2,25 @@
   "use strict";
 
   const questions = Array.isArray(window.QUESTIONS) ? window.QUESTIONS : [];
+  const enrichment =
+    window.QUESTION_ENRICHMENT && typeof window.QUESTION_ENRICHMENT === "object"
+      ? window.QUESTION_ENRICHMENT
+      : {};
+
+  function getEnrichment(id) {
+    return enrichment[id] || {};
+  }
+
+  function asParagraphs(value) {
+    if (!value) return [];
+    return Array.isArray(value) ? value.filter(Boolean) : [value];
+  }
+
+  function renderParagraphs(value, className) {
+    return asParagraphs(value)
+      .map((paragraph) => `<p class="${className}">${inlineCode(paragraph)}</p>`)
+      .join("");
+  }
   const STORAGE = {
     mastered: "py100-mastered",
     saved: "py100-saved",
@@ -147,11 +166,16 @@
 
       if (!query) return true;
 
+      const extra = getEnrichment(question.id);
+
       const haystack = [
         question.title,
         question.category,
         question.level,
         question.summary,
+        ...asParagraphs(extra.detail),
+        ...asParagraphs(extra.followUpAnswer),
+        ...(extra.morePoints || []),
         ...question.points,
         question.followUp,
       ]
@@ -167,6 +191,7 @@
     const isSaved = state.saved.has(question.id);
     const isMastered = state.mastered.has(question.id);
     const frequencyText = question.frequency >= 5 ? "高频 TOP" : "常考";
+    const extra = getEnrichment(question.id);
 
     return `
       <article class="question-card" id="q-${id}">
@@ -207,9 +232,23 @@
             <p class="answer-label">QUICK ANSWER</p>
             <p class="answer-summary">${inlineCode(question.summary)}</p>
 
+            ${
+              asParagraphs(extra.detail).length
+                ? `
+                  <p class="answer-label answer-label-detail">深度解析</p>
+                  <div class="answer-detail-block">
+                    ${renderParagraphs(extra.detail, "answer-detail")}
+                  </div>
+                `
+                : ""
+            }
+
             <ul class="key-points">
               ${question.points
                 .map((point) => `<li>${inlineCode(point)}</li>`)
+                .join("")}
+              ${(extra.morePoints || [])
+                .map((point) => `<li class="more-point">${inlineCode(point)}</li>`)
                 .join("")}
             </ul>
 
@@ -237,8 +276,22 @@
             }
 
             <div class="follow-up">
-              <strong>可能追问</strong>
-              <p>${inlineCode(question.followUp)}</p>
+              <div class="follow-up-item">
+                <strong>可能追问</strong>
+                <p>${inlineCode(question.followUp)}</p>
+              </div>
+              ${
+                asParagraphs(extra.followUpAnswer).length
+                  ? `
+                    <div class="follow-up-item follow-up-item-answer">
+                      <strong>追问参考</strong>
+                      <div class="follow-up-answer-body">
+                        ${renderParagraphs(extra.followUpAnswer, "follow-up-answer-p")}
+                      </div>
+                    </div>
+                  `
+                  : ""
+              }
             </div>
 
             <div class="answer-actions">
