@@ -30,7 +30,7 @@ jobs:
       - name: Prepare artifact
         run: |
           mkdir _site
-          cp index.html styles.css questions.js app.js .nojekyll _site/
+          cp index.html styles.css questions.js question-enrichment.js app.js .nojekyll _site/
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v3
